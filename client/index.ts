@@ -1,6 +1,6 @@
 enum Role { SUPERADMIN, ADMIN, SUBSCRIBER };
 // data is coming from backend where column names can't follow naming conventions as it is case insensitive
-type newUser={
+type NewUser={
     firstName: string;
     middleName: string;
     lastName: string;
@@ -75,7 +75,7 @@ class Crud<T> {
 }
 
 //API CALLS ========================================================================================================================================
-async function addUser(object : newUser) {
+async function addUser(object : NewUser) {
 
     let response = await fetch(`http://localhost:3000/api/`, {
         method: 'POST',
