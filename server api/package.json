@@ -1,0 +1,27 @@
+{
+    "name": "crudapi",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc",
+        "prestart": "npm run build",
+        "start": "node ."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/uuid": "^8.3.0",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "pg": "^8.6.0",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.12",
+        "@types/node": "^16.0.0"
+    }
+}

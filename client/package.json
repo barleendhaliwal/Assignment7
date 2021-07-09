@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "mdb-ui-kit": "^3.8.1"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.6"
+  }
+}
