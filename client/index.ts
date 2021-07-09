@@ -208,7 +208,7 @@ function showTable() {
 
     //console.log("showtable");
 
-    var table: HTMLTableElement = <HTMLTableElement>document.createElement("table"); // TS knows that only a generic html element is returned by createElement, hence we need to specify
+    let table: HTMLTableElement = <HTMLTableElement>document.createElement("table"); // TS knows that only a generic html element is returned by createElement, hence we need to specify
     table.className = 'table table-hover';
 
     // EXTRACT VALUE FOR HTML HEADER. 
