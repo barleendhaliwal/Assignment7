@@ -1,11 +1,10 @@
 import express from "express";
 const router = express.Router();
-//import { v4 as uuidv4 } from 'uuid';
+import * as dotenv from 'dotenv';
 
-//import data from '../../data.json';
-// import {getUsers} from './queries'
+dotenv.config({path:__dirname+'/../../.env'});
 
-type T = {
+type User = {
 
     firstName: string;
     middleName: string;
@@ -18,11 +17,11 @@ type T = {
 
 const Pool = require('pg').Pool
 const pool = new Pool({
-    user: 'barleen',
-    host: 'localhost',
-    database: 'barleen',
-    password: '123456',
-    port: 5432,
+    user: process.env.USER_NAME,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
 })
 
 //SENDS ALL MEMBERS
@@ -32,7 +31,6 @@ router.get("/", (req, res) => {
         if (error) {
             throw error
         }
-        console.log(results.rows)
         res.status(200).json(results.rows)
     })
 
@@ -47,7 +45,6 @@ router.get("/:id", (req, res) => {
         if (error) {
             throw error
         }
-        console.log(results.rows)
         res.status(200).json(results.rows)
     })
 
@@ -56,8 +53,7 @@ router.get("/:id", (req, res) => {
 //ADD MEMBER
 router.post("/", (req, res) => {
 
-    console.log("add member")
-    const newMember: T = {
+    const newMember: User = {
 
         firstName: req.body.firstName,
         middleName: req.body.middleName,
@@ -72,11 +68,11 @@ router.post("/", (req, res) => {
 
 
     if (!newMember.firstName || !newMember.lastName || !newMember.email || !newMember.phoneNumber || (newMember.role < 0 || newMember.role > 2) || !newMember.address) {
-        console.log(newMember)
+        
         res.status(400).json({ message: `Give Correct Input` })
     }
     if (newMember.phoneNumber.length !== 10) {
-        res.status(400).json({ message: `Give Correct Input` })
+        res.status(400).json({ message: `Phone Number must be of 10 digits` })
     }
     else {
 
@@ -85,8 +81,8 @@ router.post("/", (req, res) => {
                 throw error
             }
             if (result.rows.length !== 0) {
-                console.log(result);
-                res.status(400).json({ message: `User Already Exists` })
+                res.status(405).json({ message: `User Already Exists` })
+                //405 Method Not Allowed: The server has received and recognized the request, but has rejected the specific request method
             }
             else {
 
@@ -96,7 +92,7 @@ router.post("/", (req, res) => {
                         throw error
                     }
 
-                    res.status(200).json({ message: `Added User Successfully !`, addedRecord: newMember })
+                    res.status(201).json({ message: `Added User Successfully !`, addedRecord: newMember })
                 })
             }
         })
@@ -113,8 +109,8 @@ router.put('/:id', (req, res) => {
             throw error
         }
         if (result.rows.length === 0) {
-
-            res.status(400).json({ message: `User Does Not Exists` })
+            //requested resouce has been deleted
+            res.status(410).json({ message: `User Does Not Exists` })
         }
         else {
             let firstName = req.body.firstName;
@@ -125,12 +121,11 @@ router.put('/:id', (req, res) => {
             let role = req.body.role;
             let address = req.body.address;
             if (phoneNumber.length !== 10) {
-                res.status(400).json({ message: `Give Correct Input` })
+                res.status(400).json({ message: `Phone Number must be of 10 digits` })
                 return
             }
             const query = `UPDATE users SET "firstName"='${firstName}', "middleName"='${middleName}', "lastName"='${lastName}', email='${email}', "phoneNumber"='${phoneNumber}', role=${role}, address='${address}' where id=${id};`;
 
-            console.log(query);
             pool.query(query, (error: any, result: any) => {
                 if (error) {
                     throw error
@@ -161,13 +156,12 @@ router.delete('/:id', (req, res) => {
             throw error
         }
         if (result.rows.length === 0) {
-
-            res.status(400).json({ message: `User Does Not Exists` })
+            //invalid data sent by client - 400
+            res.status(400).json({ message: `User Does Not Exist` })
         }
         else {
 
             const query = `DELETE from users where id=${id};`;
-            console.log(query);
             pool.query(query, (error: any, result: any) => {
                 if (error) {
                     throw error
