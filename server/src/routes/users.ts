@@ -109,8 +109,8 @@ router.put('/:id', (req, res) => {
             throw error
         }
         if (result.rows.length === 0) {
-            //requested resouce has been deleted
-            res.status(410).json({ message: `User Does Not Exists` })
+            //404 - Requested for resource which doesn't exist
+            res.status(404).json({ message: `User Does Not Exists` })
         }
         else {
             let firstName = req.body.firstName;
@@ -156,8 +156,8 @@ router.delete('/:id', (req, res) => {
             throw error
         }
         if (result.rows.length === 0) {
-            //invalid data sent by client - 400
-            res.status(400).json({ message: `User Does Not Exist` })
+            //request for a resource that does not exist- 404
+            res.status(404).json({ message: `User Does Not Exist` })
         }
         else {
 
