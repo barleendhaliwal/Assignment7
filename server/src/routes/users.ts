@@ -83,9 +83,10 @@ router.post("/", (req, res) => {
                 throw error
             }
             if (result.rows.length !== 0) {
-                res.status(405).json({ message: `User Already Exists` })
+                //400 - client error - sent invalid user info
+                res.status(400).json({ message: `User Already Exists` })
                 return;
-                //405 Method Not Allowed: The server has received and recognized the request, but has rejected the specific request method
+                
             }
             else {
 
