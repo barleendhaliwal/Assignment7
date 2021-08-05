@@ -70,9 +70,11 @@ router.post("/", (req, res) => {
     if (!newMember.firstName || !newMember.lastName || !newMember.email || !newMember.phoneNumber || (newMember.role < 0 || newMember.role > 2) || !newMember.address) {
         
         res.status(400).json({ message: `Give Correct Input` })
+        return;
     }
     if (newMember.phoneNumber.length !== 10) {
         res.status(400).json({ message: `Phone Number must be of 10 digits` })
+        return;
     }
     else {
 
@@ -82,6 +84,7 @@ router.post("/", (req, res) => {
             }
             if (result.rows.length !== 0) {
                 res.status(405).json({ message: `User Already Exists` })
+                return;
                 //405 Method Not Allowed: The server has received and recognized the request, but has rejected the specific request method
             }
             else {
@@ -111,6 +114,7 @@ router.put('/:id', (req, res) => {
         if (result.rows.length === 0) {
             //404 - Requested for resource which doesn't exist
             res.status(404).json({ message: `User Does Not Exists` })
+            return;
         }
         else {
             let firstName = req.body.firstName;
@@ -158,6 +162,7 @@ router.delete('/:id', (req, res) => {
         if (result.rows.length === 0) {
             //request for a resource that does not exist- 404
             res.status(404).json({ message: `User Does Not Exist` })
+            return;
         }
         else {
 
