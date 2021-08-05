@@ -113,7 +113,7 @@ router.put('/:id', (req, res) => {
         }
         if (result.rows.length === 0) {
             //404 - Requested for resource which doesn't exist
-            res.status(404).json({ message: `User Does Not Exists` })
+            res.status(404).json({ message: `User Does Not Exists`,success:0 })
             return;
         }
         else {
@@ -125,7 +125,7 @@ router.put('/:id', (req, res) => {
             let role = req.body.role;
             let address = req.body.address;
             if (phoneNumber.length !== 10) {
-                res.status(400).json({ message: `Phone Number must be of 10 digits` })
+                res.status(400).json({ message: `Phone Number must be of 10 digits`,success:0 })
                 return
             }
             const query = `UPDATE users SET "firstName"='${firstName}', "middleName"='${middleName}', "lastName"='${lastName}', email='${email}', "phoneNumber"='${phoneNumber}', role=${role}, address='${address}' where id=${id};`;
@@ -144,7 +144,8 @@ router.put('/:id', (req, res) => {
                         phoneNumber: phoneNumber,
                         role: role,
                         address: address
-                    }
+                    },
+                    success:1
                 })
             })
         }

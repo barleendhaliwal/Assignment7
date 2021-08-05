@@ -42,8 +42,9 @@ class Crud<T> {
     update(id: number, index: number, updatedObject: T) {
 
         editUser(id, updatedObject).then((response) => {
-
-            this.items[index] = response.updatedRecord;
+            if (response.success) {
+                this.items[index] = response.updatedRecord;
+            }
             alert(response.message);
             showTable()
         }).catch(() => {
@@ -172,7 +173,7 @@ function editRow(no: number) {
     rowLname.setAttribute("contenteditable", "true");
     rowEmail.setAttribute("contenteditable", "true");
     rowPhone.setAttribute("contenteditable", "true");
-    rowRole.disabled=false;
+    rowRole.disabled = false;
     rowAddress.setAttribute("contenteditable", "true");
 
 }
@@ -189,7 +190,7 @@ function getCurrentRowData(no: number) {
     let rowPhone = document.getElementById("row" + no + "Phone")!.innerHTML;
     let rowRole = +(<HTMLSelectElement>document.getElementById("row" + (no) + "SelectRole")).value;
     let rowAddress = document.getElementById("row" + no + "Address")!.innerHTML;
-    
+
     if (rowRole === Role.SUPERADMIN)
         rowRole = 0;
     else if (rowRole === Role.ADMIN)
@@ -294,7 +295,7 @@ function showTable() {
         cell7.id = "row" + (i) + "Role";
         let selectRoleList = document.createElement("select");
         selectRoleList.id = "row" + (i) + "SelectRole";
-        selectRoleList.setAttribute("disabled","true")
+        selectRoleList.setAttribute("disabled", "true")
         let role = +crudObject.items[i].role;
         cell7.appendChild(selectRoleList)
 
